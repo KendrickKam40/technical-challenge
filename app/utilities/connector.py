@@ -18,6 +18,7 @@ class Connector:
     json_files: list[FileItem]
     process: processor
 
+    #Setup environment variables, JSON file objects and the processor instance
     def __init__(self, json_files:list[FileItem]):
         load_dotenv()
         # Assign env variables for pgSQL connection
@@ -34,6 +35,7 @@ class Connector:
 
         self.process = processor()
 
+    #Read files in the JSON list
     def read_files(self) -> pd.DataFrame:
         try:
             self.process.read_json(self.json_files)
@@ -43,6 +45,7 @@ class Connector:
             msg = {"process":"read_files", "status":"failed","message":"Unable to read JSON files"}
             return None
     
+    #Upload dataframe to postgresql database
     def upload_to_pg(self, df: pd.DataFrame) -> object:
         try:
             engine = create_engine(f'postgresql://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_database}')
@@ -80,6 +83,7 @@ class Connector:
             print("Error deleting database")
             return {"process":"delete_database","status":"failed","message":"Error deleting database"}
 
+    # Dump Schema - Note: A compatible version of postgresql must be installed for pg_dumps to work
     def dump_schema(self,filename="./solution_dump.sql"):
         try:
             command = f'pg_dump --host={self.db_host} ' \

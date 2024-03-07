@@ -10,6 +10,7 @@ class processor:
     data_file_path: str
     logger : logging.Logger
 
+    # Setup the logger and environment variables
     def __init__(self):
         load_dotenv()
         self.data_file_path = os.environ["data_file_path"]
@@ -27,7 +28,7 @@ class processor:
         self.logger.addHandler(file_handler)
 
 
-        
+    # Function to read the json files from the connector class
     def read_json(self,path:list[FileItem]):
         try:
             #read JSON into initial Dataframe
@@ -62,10 +63,12 @@ class processor:
             self.final_dataframe = processed_result
         except Exception as e:
             self.logger.error("error reading files: " + repr(e))
-            
+    
+    # Function to return the dataframe
     def get_dataframe(self):
         return self.final_dataframe
 
+    # Function to count the appearances
     @staticmethod
     def count_appearances(df:pd.DataFrame, logger:logging.Logger):
         try:
