@@ -8,5 +8,3 @@ class FileItem(BaseModel):
 class Upload(BaseModel):
     files_to_upload: list[FileItem] = Field(description="list of files to upload along with the table name")
     deleteExistingData: bool = Field(description="Flag to delete existing data in the PGSQL database before uploading files")
-    dumpSchema: bool = Field(description="Flag to run the pg_dump command after uploading data")
-

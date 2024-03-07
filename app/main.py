@@ -10,15 +10,6 @@ setup = db_setup()
 setup.create_database()
 setup.create_schema_table()
 
-
-@app.post("/api/v1/setup/createDB/")
-async def create_database():
-    setup = db_setup()
-    create_database = setup.create_database()
-    create_schema = setup.create_schema_table()
-
-    return [create_database,create_schema]
-
 @app.post("/api/v1/upload/data")
 async def upload_data(upload_body: Upload):
     response = []
@@ -35,12 +26,5 @@ async def upload_data(upload_body: Upload):
     #commence upload
     upload_response = cnx.upload_to_pg(df=return_data)
     response.append(upload_response)
-    #dump schema file
-    if(upload_body.dumpSchema):
-        dump_response = cnx.dump_schema()
-        response.append(dump_response)
     response.append({"status":200})
     return response
-
-
-

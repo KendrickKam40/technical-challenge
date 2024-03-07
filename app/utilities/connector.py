@@ -78,7 +78,7 @@ class Connector:
             print("Error deleting database")
             return {"process":"delete_database","status":"failed"}
 
-    def dump_schema(self,filename="../solution_dump.sql"):
+    def dump_schema(self,filename="./solution_dump.sql"):
         try:
             command = f'pg_dump --host={self.db_host} ' \
                     f'--dbname={self.db_database} ' \
