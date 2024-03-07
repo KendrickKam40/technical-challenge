@@ -35,10 +35,13 @@ class Connector:
         self.process = processor()
 
     def read_files(self) -> pd.DataFrame:
-        self.process.read_json(self.json_files)
-        ret: pd.DataFrame = self.process.get_dataframe()
-        return ret
-
+        try:
+            self.process.read_json(self.json_files)
+            ret: pd.DataFrame = self.process.get_dataframe()
+            return ret
+        except Exception as e:
+            msg = {"process":"read_files", "status":"failed","message":"Unable to read JSON files"}
+            return None
     
     def upload_to_pg(self, df: pd.DataFrame) -> object:
         try:
@@ -56,8 +59,7 @@ class Connector:
 
                 return {"process":"upload","status":"success"}
         except:
-            print("Error uploading to database.")
-            return {"process":"upload","status":"failed"}
+            return {"process":"upload","status":"failed","message":"Error uploading to database."}
 
     # FOR TESTING PURPOSES - Function to delete all table data
     def delete_postgres_data(self):
@@ -76,7 +78,7 @@ class Connector:
             return {"process":"delete_database","status":"success"}
         except:
             print("Error deleting database")
-            return {"process":"delete_database","status":"failed"}
+            return {"process":"delete_database","status":"failed","message":"Error deleting database"}
 
     def dump_schema(self,filename="./solution_dump.sql"):
         try:
@@ -93,6 +95,6 @@ class Connector:
             return {"process":"schema_dump","status":"success"}
         except:
             print("Error dumping schema")
-            return {"process":"schema_dump","status":"failed"}
+            return {"process":"schema_dump","status":"failed","message":"Error dumping schema"}
 
 

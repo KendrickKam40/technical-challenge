@@ -128,7 +128,7 @@ To complete the functionality in Q4, run the upload data POST method by:
 3. Copy and paste the following JSON payload:
 ```
 {
-  "deleteExistingData": true,
+  "deleteExistingData": false,
   "files_to_upload": [
             {
                 "database" : "string",
@@ -140,6 +140,13 @@ To complete the functionality in Q4, run the upload data POST method by:
             }
         ]
 }
+```
+
+This JSON structure contains the following fields
+```
+deleteExistingData: Boolean flag to specify if the postgresql database is to be cleared before importing the new data (Mostly used for testing purposes).
+
+files_to_upload: List of objects containing the table name and filename of the JSON files to be uploaded.
 ```
 4. Execute the request
 
@@ -188,3 +195,7 @@ Execute the following python command
 ```
 python run_tests.py
 ```
+
+## Error logging
+A log file is also created upon any errors that occur in the process_data.py.
+This can be found in the main directory with the file name process_data_log.log
