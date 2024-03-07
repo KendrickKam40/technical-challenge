@@ -1,0 +1,8 @@
+fastapi>=0.68.0,<0.69.0
+pydantic
+uvicorn>=0.15.0,<0.16.0
+pandas
+psycopg2
+sqlalchemy
+python-dotenv
+pytest
