@@ -60,7 +60,7 @@ class Connector:
                 #run SQL query
                 df_renamed.to_sql(name=table_name, con=engine, schema=self.database_schema,index=False, if_exists='append')
 
-                return {"process":"upload","status":"success"}
+            return {"process":"upload","status":"success"}
         except:
             return {"process":"upload","status":"failed","message":"Error uploading to database."}
 
