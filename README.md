@@ -7,6 +7,18 @@ The following document outlines the architecture, process and setup instructions
 
 ## Setup/Installation
 
+Run the docker compose.yml file
+
+```bash
+  docker compose up -d
+```
+Verify using docker ps OR docker desktop that the following 3 containers are running:
+- web
+- db
+- pgadmin4_container
+
+## Configuiring the .env file
+
 Go to the project directory
 
 ```bash
@@ -31,23 +43,11 @@ db_password = "admin123"
 db_schema = "mytest"
 data_file_path="./data_in"
 ```
-
-Run the docker compose.yml file
-
-```bash
-  docker compose up -d
-```
-Verify using docker ps OR docker desktop that the following 3 containers are running:
-- web
-- db
-- pgadmin4_container
-
-
-## Containers
+## Architecture
 
 3 containers will be created upon executing the docker compose command.
 
-### Web
+### 1. Container: Web
 
 The web container contains the FastAPI web application, the Python scripts to process the data, the data_in folder that contains the 2 json files.
 
@@ -74,7 +74,7 @@ The file structure that houses the web application in the container is as follow
 │   ├── README.md
 ```
 
-### db
+### 2. Container: db
 
 Houses the postgresql database instance that will connect to the FastAPI web application.
 This data base is setup with the following details:
@@ -86,7 +86,7 @@ POSTGRES_DB: mydatabase
 Port_Mapping -> 5432:5432
 ```
 
-### pgadmin4_container
+### 3. Container: pgadmin4_container
 
 This container contains the PGADMIN instance to explore the database. To launch the UI, navigate to localhost:8888 and login with the following credentials:
 
@@ -94,22 +94,12 @@ This container contains the PGADMIN instance to explore the database. To launch 
 PGADMIN_DEFAULT_EMAIL: kendrickkam40@gmail.com
 PGADMIN_DEFAULT_PASSWORD: admin123
 ```
+
 ## The Task
 Navigate to the FastAPI docs link via the following url:
 ```
 http://localhost:8080/docs
 ```
-
-First, call the API endpoint to setup the schema:
-```
-curl -X 'POST' \
-  'http://localhost:8080/api/v1/setup/createDB/' \
-  -H 'accept: application/json' \
-  -d ''
-```
-OR use the docs UI to run the request.
-
-![example execute setup](./images/fastapi_setup.png)
 
 To complete the functionality in Q4, run the upload data POST method by:
 1. click the dropdown arrow

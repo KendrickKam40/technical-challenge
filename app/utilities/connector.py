@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import pandas as pd
 from subprocess import PIPE,Popen
 from .process_data import processor
+from classes import FileItem
+
 
 class Connector:
     db_host:str
@@ -13,10 +15,10 @@ class Connector:
     db_user: str
     db_password: str
     database_schema: str
-    json_files: list
+    json_files: list[FileItem]
     process: processor
 
-    def __init__(self, json_files):
+    def __init__(self, json_files:list[FileItem]):
         load_dotenv()
         # Assign env variables for pgSQL connection
         self.db_host = os.environ["db_host"]
@@ -43,7 +45,7 @@ class Connector:
             engine = create_engine(f'postgresql://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_database}')
             for file in self.json_files:
                 #get table name to insert
-                table_name = file["database"]
+                table_name = file.database
                 #get appropriate df slice from the larger pandas df
                 df_to_insert = df.loc[df['source'] == table_name]
                 #rename/remove uneccesary columns
@@ -64,7 +66,7 @@ class Connector:
             cursor = connection.cursor()
 
             for file in self.json_files:
-                table_name = file["database"]
+                table_name = file.database
                 delete_tbl_data = f"DELETE FROM {self.database_schema}.{table_name};"
                 cursor.execute(delete_tbl_data)
             connection.commit()

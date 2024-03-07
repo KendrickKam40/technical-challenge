@@ -1,6 +1,5 @@
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
-
+from classes import FileItem, Upload
 from utilities.db_setup import db_setup
 from utilities.connector import Connector
 
@@ -10,19 +9,6 @@ app = FastAPI()
 setup = db_setup()
 setup.create_database()
 setup.create_schema_table()
-
-
-class FileItem(BaseModel):
-    database : str = Field(description="table name to upload the JSON file to")
-    filepath : str = Field(description="JSON filename")
-
-
-
-class Upload(BaseModel):
-    files_to_upload: list[FileItem] = Field(description="list of files to upload along with the table name")
-    deleteExistingData: bool = Field(description="Flag to delete existing data in the PGSQL database before uploading files")
-    dumpSchema: bool = Field(description="Flag to run the pg_dump command after uploading data")
-
 
 
 @app.post("/api/v1/setup/createDB/")
@@ -39,7 +25,6 @@ async def upload_data(upload_body: Upload):
 
     files_to_read = upload_body.files_to_upload
     cnx = Connector(json_files=files_to_read)
-
 
     return_data = cnx.read_files()
 

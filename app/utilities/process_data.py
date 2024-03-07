@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from dotenv import load_dotenv
+from classes import FileItem
 
 class processor:
 
@@ -11,12 +12,12 @@ class processor:
         load_dotenv()
         self.data_file_path = os.environ["data_file_path"]
         
-    def read_json(self,path:list):
+    def read_json(self,path:list[FileItem]):
         #read JSON into initial Dataframe
         df_list = []
         #Loop through list of json Paths to process
         for p in path:
-            df = pd.read_json(self.data_file_path+"/"+p["filepath"])
+            df = pd.read_json(self.data_file_path+"/"+p.filepath)
             
             #Setup empty list to store processed data
             processed = []
@@ -31,7 +32,7 @@ class processor:
             #Convert processed data list to PD dataframe
             processed_df = pd.DataFrame.from_dict(processed)
 
-            processed_df["source"]=p["database"]
+            processed_df["source"]=p.database
 
             df_list.append(processed_df)
         
