@@ -13,7 +13,7 @@ This project structured into three containers, each serving a distinct purpose w
 
 - PGAdmin4 Container: This container encompasses the PGAdmin instance, facilitating database exploration and management. It provides a user-friendly interface to interact with the PostgreSQL database.
 
-![Architectural diagram](./images/ArchitecturalDiagram.png)
+![Architectural diagram](./images/archDiagram.png)
 
 ### 1. Container: Web
 
